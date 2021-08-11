@@ -7,7 +7,7 @@ This script generates a text-file containing:
 All of these come with a progress bar and percentage
 
 ## How to install and configure?
-1. Download the latest package
+1. Download the latest release
 2. Unzip this and move the "steam-achievements" folder into your OBS Studio plugins folder
 3. Enter Steam Web API-Key (request here: https://steamcommunity.com/dev/apikey; you can enter any domain)
 4. Enter Steam Id (use steamid64 from this url: www.steamidfinder.com; enter your profile-url)
