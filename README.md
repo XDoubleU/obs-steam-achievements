@@ -6,6 +6,8 @@ This script generates a text-file containing:
 
 All of these come with a progress bar and percentage
 
+![Example image](https://github.com/XDoubleU/obs-steam-achievements/blob/main/example.PNG)
+
 ## How to install and configure?
 1. Download the latest release.
 2. Unzip this and move the "steam-achievements" folder into your OBS Studio plugins folder.
