@@ -33,8 +33,11 @@ def generate_txt_file(achievements):
         else:
             name = list(sorted_achievements.keys())[index]
 
-        file.write((name + ": " + progress_bar(list(sorted_achievements.values())[index]) + " - " + str('{:.2f}'.format(list(sorted_achievements.values())[index])) + "%\n").encode('utf8'))
+        game_completion = list(sorted_achievements.values())[index]
+        file.write((name + ": " + progress_bar(game_completion) + " - " + str('{:.2f}'.format(game_completion)) + "%\n").encode('utf8'))
 
     file.close()
 
+achievements = steam_achievements.get_steam_achievements("2388D55D6F0B0FD21D7EC8A15F1D3C05", "76561198127953838")
+generate_txt_file(achievements)
 

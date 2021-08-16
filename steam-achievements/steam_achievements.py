@@ -1,21 +1,24 @@
 from os import remove
 import time, grequests, requests, logging, math
 
-def calculate_percentage(achievements):
-    total = len(achievements)
-    achieved = 0
+def _get_achieved_achievements(achievements):
+    result = 0
 
     for achievement in achievements:
-        achieved += achievement["achieved"]
-    
-    return round((achieved/total)*100, 2)
+        result += achievement["achieved"]
+
+    return result
+
+def _get_total_achievements(achievements):
+    return len(achievements)
+
+def _get_game_completion(game):
+    return (game[0]/game[1])*100
 
 def get_steam_achievements(api_key, steam_id):
     start_time = time.time()
 
-    #include_free_games didn't look necessary when building this
-    #owned_games = requests.get("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+api_key+"&steamid="+steam_id+"&include_played_free_games=true").json()["response"]["games"]
-    owned_games = requests.get("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+api_key+"&steamid="+steam_id).json()["response"]["games"]
+    owned_games = requests.get("https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key="+api_key+"&steamid="+steam_id+"&include_played_free_games=true").json()["response"]["games"]
 
     # create request urls
     urls = []
@@ -32,23 +35,24 @@ def get_steam_achievements(api_key, steam_id):
         game_stats = response.json()["playerstats"]
 
         if "achievements" in game_stats:
-            game_percentage = calculate_percentage(game_stats["achievements"])
-            game_achievements[game_stats["gameName"]] = game_percentage
+            achieved_achievements = _get_achieved_achievements(game_stats["achievements"])
+            total_achievements = _get_total_achievements(game_stats["achievements"])
+            game_achievements[game_stats["gameName"]] = _get_game_completion([achieved_achievements, total_achievements])
     
     logging.basicConfig(filename='app.log', filemode='a', format='%(asctime)s - %(message)s', level=logging.INFO)
     logging.info("Gathered achievement info for "+str(len(owned_games))+" games in "+str(time.time() - start_time)+" seconds")
-    return game_achievements
-
-def get_real_completion(game_achievements):
-    total_percentage = sum(game_achievements.values())
-    return round((total_percentage/len(game_achievements)), 2)
+    return dict(sorted(game_achievements.items(), key=lambda item: item[0].lower()))
 
 def get_steam_completion(game_achievements):
     # https://steamcommunity.com/sharedfiles/filedetails/?id=650166273
-    total_percentage = sum(game_achievements.values())
-    started_games = 0
-    for i in range(0, len(game_achievements)):
-        if list(game_achievements.values())[i] != 0:
-            started_games+=1
+    
+    total_percentage = sum(game_completion for game_completion in game_achievements.values() if round(game_completion) is not 0)
+    started_games = sum(1 for game_completion in game_achievements.values() if round(game_completion) is not 0)
 
-    return math.floor(total_percentage/started_games)
+    return math.floor((total_percentage/started_games))
+
+def get_real_completion(game_achievements):
+    total_percentage = sum(game_completion for game_completion in game_achievements.values())
+    total_games = len(game_achievements)
+
+    return round((total_percentage/total_games), 2)
