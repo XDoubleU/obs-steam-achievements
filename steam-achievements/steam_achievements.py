@@ -15,6 +15,14 @@ def _get_total_achievements(achievements):
 def _get_game_completion(game):
     return (game[0]/game[1])*100
 
+def get_current_game(api_key, steam_id):
+    player_summary = requests.get("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key="+api_key+"&steamids="+steam_id).json()["response"]["players"][0]
+    
+    if "gameid" in player_summary:
+        return player_summary["gameextrainfo"]
+    else:
+        return None
+
 def get_steam_achievements(api_key, steam_id):
     start_time = time.time()
 
