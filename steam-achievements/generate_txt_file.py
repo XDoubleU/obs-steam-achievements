@@ -38,6 +38,3 @@ def generate_txt_file(achievements):
 
     file.close()
 
-achievements = steam_achievements.get_steam_achievements("2388D55D6F0B0FD21D7EC8A15F1D3C05", "76561198127953838")
-generate_txt_file(achievements)
-
