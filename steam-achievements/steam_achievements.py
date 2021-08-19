@@ -146,5 +146,3 @@ def get_real_completion(game_achievements):
     total_games = len(game_achievements)
 
     return round((total_percentage/total_games), 2)
-
-get_steam_achievements("2388D55D6F0B0FD21D7EC8A15F1D3C05", "76561198127953838")
