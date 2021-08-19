@@ -21,9 +21,6 @@ def clear_cache(props, prop):
   if os.path.isfile("games_without_achievements.txt"):
     os.remove("games_without_achievements.txt")
 
-  if os.path.isfile("completed_games.txt"):
-    os.remove("completed_games.txt")
-
 # Script
 def script():
   global api_key, steam_id, update_when_playing, output_template, amount_of_games, width_of_games

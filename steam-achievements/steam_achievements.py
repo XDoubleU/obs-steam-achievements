@@ -34,41 +34,6 @@ def _filter_games_without_achievements(games):
     
     return result
 
-def _get_completed_games():
-    result = []
-
-    if os.path.isfile("completed_games.txt"):
-        f = open("completed_games.txt", "r")
-        lines = f.readlines()
-
-        for line in lines:
-            result.append(line.strip())
-            
-        f.close()
-
-    return result
-
-def _save_completed_game(game_name):
-    if game_name not in _get_completed_games():
-        f = open("completed_games.txt", "a")
-        f.write(game_name + "\n")
-        f.close()
-
-def _filter_completed_games(games):
-    result = {}
-    completed_games = _get_completed_games()
-
-    ready_for_removal = []
-    for i in range(0, len(games)):
-        if games[i]["name"] in completed_games:
-            ready_for_removal.append(i)
-            result[games[i]["name"]] = 100
-    
-    for index in ready_for_removal:
-        games.pop(index)
-
-    return result
-
 def _get_achieved_achievements(achievements):
     result = 0
 
@@ -101,9 +66,6 @@ def get_steam_achievements(api_key, steam_id):
     # remove games without achievements
     owned_games = _filter_games_without_achievements(owned_games)
 
-    # remove completed games and add these to game_achievements
-    game_achievements = _filter_completed_games(owned_games)
-
     # create request urls
     urls = []
     for game in owned_games:
@@ -120,9 +82,6 @@ def get_steam_achievements(api_key, steam_id):
             achieved_achievements = _get_achieved_achievements(game_stats["achievements"])
             total_achievements = _get_total_achievements(game_stats["achievements"])
             game_completion = _get_game_completion([achieved_achievements, total_achievements])
-
-            if game_completion == 100:
-                _save_completed_game(game_stats["gameName"])
 
             game_achievements[game_stats["gameName"]] = game_completion
 
@@ -146,3 +105,4 @@ def get_real_completion(game_achievements):
     total_games = len(game_achievements)
 
     return round((total_percentage/total_games), 2)
+
