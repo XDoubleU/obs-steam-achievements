@@ -1,5 +1,5 @@
 import obspython as obs
-import steam_achievements, generate_txt_file
+import steam_achievements, generate_txt_file, os.path
 
 DEFAULT_OUTPUT_TEMPLATE = ("Currently Playing: #current_game#\n"
                            "Game  Completion : #current_game_completion#\n\n"
@@ -16,6 +16,13 @@ time = 10
 amount_of_games = 10
 width_of_games = 17
 output_template = DEFAULT_OUTPUT_TEMPLATE
+
+def clear_cache(props, prop):
+  if os.path.isfile("games_without_achievements.txt"):
+    os.remove("games_without_achievements.txt")
+
+  if os.path.isfile("completed_games.txt"):
+    os.remove("completed_games.txt")
 
 # Script
 def script():
@@ -53,6 +60,7 @@ def script_defaults(settings):
 # Called to display the properties GUI
 def script_properties():
   props = obs.obs_properties_create()
+  obs.obs_properties_add_button(props, "clear_cache", "Clear Cache", clear_cache)
   obs.obs_properties_add_text(props, "api_key", "API Key", obs.OBS_TEXT_DEFAULT)
   obs.obs_properties_add_text(props, "steam_id", "Steam ID", obs.OBS_TEXT_DEFAULT)
   obs.obs_properties_add_bool(props, "update_when_playing", "Only update when playing")

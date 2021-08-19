@@ -19,7 +19,9 @@ def _generate_values(achievements, game, amount_of_games):
         else:
             break
     
-    return [current_game, current_game_completion, steam_completion, real_completion, completed_games, dict(list(achievements.items())[:amount_of_games])]
+    length = amount_of_games if len(achievements) >= amount_of_games else len(achievements)
+
+    return [current_game, current_game_completion, steam_completion, real_completion, completed_games, dict(list(achievements.items())[:length])]
 
 def _generate_strings(values, width_of_games):
     if values[0] == None:
