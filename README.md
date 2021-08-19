@@ -8,7 +8,7 @@ This script generates a customizable text-file containing:
 All of these come with a progress bar and percentage
 
 ![Example image](https://github.com/XDoubleU/obs-steam-achievements/blob/main/example.PNG)
-
+![Example image](https://github.com/XDoubleU/obs-steam-achievements/blob/main/example-config.PNG)
 
 ## How to install and configure?
 1. Download the latest release.
