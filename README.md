@@ -1,4 +1,7 @@
 # Steam Achievements script for OBS Studio
+
+**I started this project because I needed this for own use, if you find any flaws, find it too complex... Please don't hesitate to give feedback!**
+
 This script generates a customizable text-file containing:
 - Your current game and completion percentage
 - Your steam average achievement completion percentage
